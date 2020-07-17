@@ -1,5 +1,6 @@
 #pragma once
 #include <sys/types.h>
+#include <stdarg.h>
 
 #define FILE_MODE_READ          (1 << 0)
 #define FILE_MODE_WRITE         (1 << 1)
@@ -31,3 +32,8 @@ int __libc_file_open_fd(struct __FILE *fp, int fd, int flags);
 int __libc_file_mode(const char *mode);
 int __libc_file_flush_read(struct __FILE *fp);
 int __libc_file_flush_write(struct __FILE *fp);
+
+int __libc_vprintf(const char *format,
+                   void *ctx,
+                   int (*out)(void *ctx, const char *text, size_t len),
+                   va_list ap);
