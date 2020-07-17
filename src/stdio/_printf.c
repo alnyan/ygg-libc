@@ -273,12 +273,14 @@ int __libc_vprintf(const char *format,
                         if (out(ctx, &pad_char, 1) != 0) {
                             return -1;
                         }
+                        ++count;
                     }
                 }
 
                 if (out(ctx, tmp, l) != 0) {
                     return -1;
                 }
+                count += l;
             } else if (ch == 'c') {
                 // TODO: wchar_t
                 pv.value_char = va_arg(ap, int);
@@ -287,6 +289,7 @@ int __libc_vprintf(const char *format,
                 if (out(ctx, &pv.value_char, 1) != 0) {
                     return -1;
                 }
+                ++count;
             } else if (ch == 's') {
                 // TODO: wchar_t
                 pv.value_str = va_arg(ap, const char *);
@@ -302,16 +305,19 @@ int __libc_vprintf(const char *format,
                         if (out(ctx, &pad_char, 1) != 0) {
                             return -1;
                         }
+                        ++count;
                     }
                 }
                 if (out(ctx, pv.value_str, l) != 0) {
                     return -1;
                 }
+                count += l;
             } else {
                 // Unknown format or '%'
                 if (out(ctx, &ch, 1) != 0) {
                     return -1;
                 }
+                ++count;
                 continue;
             }
 
@@ -322,12 +328,14 @@ int __libc_vprintf(const char *format,
                     if (out(ctx, &pad_char, 1) != 0) {
                         return -1;
                     }
+                    ++count;
                 }
             }
         } else {
             if (out(ctx, &ch, 1) != 0) {
                 return -1;
             }
+            ++count;
         }
     }
 
