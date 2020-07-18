@@ -37,3 +37,7 @@ int __libc_vprintf(const char *format,
                    void *ctx,
                    int (*out)(void *ctx, const char *text, size_t len),
                    va_list ap);
+int __libc_vscanf(const char *format,
+                  void *ctx,
+                  int (*in)(void *ctx),
+                  va_list ap);

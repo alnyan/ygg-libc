@@ -43,6 +43,7 @@ enum printf_len {
     PL_L
 };
 
+// TODO: return the count that WOULD'VE been printed
 int __libc_vprintf(const char *format,
                    void *ctx,
                    int (*out)(void *ctx, const char *text, size_t len),
@@ -271,14 +272,14 @@ int __libc_vprintf(const char *format,
                 if (field_width > 0 && l < (size_t) field_width) {
                     for (size_t i = 0; i < field_width - l; ++i) {
                         if (out(ctx, &pad_char, 1) != 0) {
-                            return -1;
+                            goto end;
                         }
                         ++count;
                     }
                 }
 
                 if (out(ctx, tmp, l) != 0) {
-                    return -1;
+                    goto end;
                 }
                 count += l;
             } else if (ch == 'c') {
@@ -287,7 +288,7 @@ int __libc_vprintf(const char *format,
                 l = 1;
 
                 if (out(ctx, &pv.value_char, 1) != 0) {
-                    return -1;
+                    goto end;
                 }
                 ++count;
             } else if (ch == 's') {
@@ -303,19 +304,19 @@ int __libc_vprintf(const char *format,
                 if (field_width > 0 && l < (size_t) field_width) {
                     for (size_t i = 0; i < field_width - l; ++i) {
                         if (out(ctx, &pad_char, 1) != 0) {
-                            return -1;
+                            goto end;
                         }
                         ++count;
                     }
                 }
                 if (out(ctx, pv.value_str, l) != 0) {
-                    return -1;
+                    goto end;
                 }
                 count += l;
             } else {
                 // Unknown format or '%'
                 if (out(ctx, &ch, 1) != 0) {
-                    return -1;
+                    goto end;
                 }
                 ++count;
                 continue;
@@ -326,18 +327,19 @@ int __libc_vprintf(const char *format,
             if (field_width > 0 && l < (size_t) field_width) {
                 for (size_t i = 0; i < field_width - l; ++i) {
                     if (out(ctx, &pad_char, 1) != 0) {
-                        return -1;
+                        goto end;
                     }
                     ++count;
                 }
             }
         } else {
             if (out(ctx, &ch, 1) != 0) {
-                return -1;
+                goto end;
             }
             ++count;
         }
     }
 
+end:
     return count;
 }
