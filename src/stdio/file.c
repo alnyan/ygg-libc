@@ -44,6 +44,8 @@ int __libc_file_mode(const char *mode) {
 
 int __libc_file_flush_read(FILE *fp) {
     if ((fp->flags & FILE_MODE_READ) && fp->seek) {
+        // Flush ungetc buffer
+        fp->ungetc = -1;
         // TODO: off_t
         long count = fp->rdbuf - fp->rdbufpos;
         if (count < 0) {

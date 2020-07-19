@@ -7,6 +7,7 @@
 #define BUFSIZ          8192
 #define _IOLBF          1
 #define _IONBF          2
+#define _IOFBF          3
 #define TMP_MAX         10000
 #define FOPEN_MAX       8               // TODO
 #define FILENAME_MAX    1024
@@ -31,6 +32,8 @@ int    remove(const char *pathname);
 int    rename(const char *oldpath, const char *newpath);                            // TODO
 int    renameat(int olddfd, const char *oldpath, int newdfd, const char *newpath);  // TODO
 char  *ctermid(char *s);
+int    setvbuf(FILE *fp, char *buf, int mode, size_t size);
+void   setbuf(FILE *fp, char *buf);
 
 void   flockfile(FILE *fp);
 void   funlockfile(FILE *fp);

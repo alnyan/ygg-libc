@@ -22,7 +22,7 @@ struct __FILE {
 
     void    (*free) (void *ctx, struct __FILE *fp);
 
-    int fd, flags, buf_mode;
+    int fd, flags, buf_mode, ungetc;
     size_t wrbuf, rdbuf, rdbufpos;
 };
 

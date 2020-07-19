@@ -22,6 +22,12 @@ int fgetc_unlocked(FILE *fp) {
 
     __libc_file_flush_write(fp);
 
+    if (fp->ungetc != -1) {
+        int r = fp->ungetc;
+        fp->ungetc = -1;
+        return r;
+    }
+
     if (fp->rdbufpos >= fp->rdbuf) {
         // Reached end of readbuf
         // TODO: arbitrary buffer size setting?
