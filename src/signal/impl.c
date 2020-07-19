@@ -29,6 +29,16 @@ static _Noreturn void __libc_signal_handle(int signum) {
     while (1);
 }
 
+sighandler_t __libc_signal(int signum, sighandler_t s) {
+    if (signum >= NSIG || signum <= 0) {
+        exit(-1);
+    }
+
+    sighandler_t old = signal_handlers[signum];
+    signal_handlers[signum] = s;
+    return old;
+}
+
 void __libc_signal_init(void) {
     stack_t ss;
     void *sig_stack;
