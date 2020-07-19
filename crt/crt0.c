@@ -22,7 +22,5 @@ void _start(void *_arg) {
 
     __libc_signal_init();
 
-    fwrite("Test\n", 1, 5, stdout);
-
     exit(main(argc, argp));
 }
