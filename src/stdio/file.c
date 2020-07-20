@@ -20,6 +20,7 @@ FILE *__libc_file_create(void) {
 
     res->free = file_default_free;
     res->buf = ((void *) res) + sizeof(FILE);
+    res->ungetc = -1;
 
     return res;
 }
@@ -43,9 +44,8 @@ int __libc_file_mode(const char *mode) {
 }
 
 int __libc_file_flush_read(FILE *fp) {
+    fp->ungetc = -1;
     if ((fp->flags & FILE_MODE_READ) && fp->seek) {
-        // Flush ungetc buffer
-        fp->ungetc = -1;
         // TODO: off_t
         long count = fp->rdbuf - fp->rdbufpos;
         if (count < 0) {

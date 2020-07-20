@@ -12,12 +12,12 @@ int fgetc_unlocked(FILE *fp) {
     }
 
     if (fp->flags & FILE_FLAG_EOF) {
-        return 0;
+        return EOF;
     }
     if (!(fp->flags & FILE_MODE_READ)) {
         errno = EBADF;
         fp->flags |= FILE_FLAG_ERROR;
-        return 0;
+        return EOF;
     }
 
     __libc_file_flush_write(fp);

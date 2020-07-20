@@ -17,6 +17,7 @@ FILE _stdin = {
     .buf_mode = _IOLBF,
     .ctx = &_stdin,
     .fd = STDIN_FILENO,
+    .ungetc = -1,
     .free = NULL,
     .read = file_read,
     .write = file_write,
