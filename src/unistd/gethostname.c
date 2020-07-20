@@ -1,10 +1,7 @@
+#include <sys/utsname.h>
 #include <unistd.h>
 #include <string.h>
 #include <errno.h>
-
-// TODO: sys/utsname.h
-#include <ygg/utsname.h>
-extern int uname(struct utsname *buf);
 
 int gethostname(char *name, size_t len) {
     // Use uname to retrieve hostname

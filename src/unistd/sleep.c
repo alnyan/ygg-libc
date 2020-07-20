@@ -1,21 +1,15 @@
 #include <unistd.h>
-
-// TODO: time.h
-struct timespec {
-    uint64_t ts_sec;
-    uint64_t ts_nsec;
-};
-extern int nanosleep(const struct timespec *ts, struct timespec *rem);
+#include <time.h>
 
 unsigned int sleep(unsigned int sec) {
     struct timespec ts;
     struct timespec rem;
 
-    ts.ts_sec = sec;
-    ts.ts_nsec = 0;
+    ts.tv_sec = sec;
+    ts.tv_nsec = 0;
 
     if (nanosleep(&ts, &rem) != 0) {
-        return rem.ts_sec;
+        return rem.tv_sec;
     } else {
         return 0;
     }
