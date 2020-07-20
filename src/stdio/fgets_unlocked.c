@@ -5,7 +5,7 @@ char *fgets_unlocked(char *buf, int len, FILE *fp) {
         return NULL;
     }
 
-    int rem = len;
+    int rem = len - 1;
     size_t off = 0;
 
     while (rem) {
@@ -23,6 +23,7 @@ char *fgets_unlocked(char *buf, int len, FILE *fp) {
     }
 
     if (off) {
+        buf[off] = 0;
         return buf;
     } else {
         return NULL;
