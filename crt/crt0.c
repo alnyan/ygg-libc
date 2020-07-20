@@ -9,15 +9,18 @@
 extern int main(int argc, char **argv);
 
 extern char **environ;
+extern uintptr_t __libc_orig_argp_base;
+extern size_t __libc_orig_argp_count;
 
 void _start(void *_arg) {
     uintptr_t arg = (uintptr_t) _arg;
     // arg: argp page number << 24 | 12 bit page count << 12 | 12 bit argc
     char **argp = (char **) ((arg >> 12) & ~0xFFF);
     int argc = arg & 0xFFF;
-    //__libc_vecp_pages = (arg >> 12) & 0xFFF;
 
-    // TODO: better handling for this
+    __libc_orig_argp_count = (arg >> 12) & 0xFFF;
+    __libc_orig_argp_base = (uintptr_t) argp;
+
     environ = &argp[argc + 1];
 
     __libc_signal_init();
