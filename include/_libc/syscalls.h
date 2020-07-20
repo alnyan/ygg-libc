@@ -36,6 +36,17 @@ static inline long __syscall3(long n, long a1, long a2, long a3) {
     return ret;
 }
 
+static inline long __syscall5(long n, long a1, long a2, long a3, long a4, long a5) {
+	unsigned long ret;
+	register long r10 __asm__("r10") = a4;
+	register long r8 __asm__("r8") = a5;
+	asm volatile ("syscall"
+                 :"=a"(ret)
+                 :"a"(n),"D"(a1),"S"(a2),"d"(a3),"r"(r10),"r"(r8)
+                 :"rcx","r11","memory");
+	return ret;
+}
+
 static inline long __syscall6(long n, long a1, long a2, long a3, long a4, long a5, long a6) {
 	unsigned long ret;
 	register long r10 __asm__("r10") = a4;
