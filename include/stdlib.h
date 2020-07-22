@@ -2,6 +2,11 @@
 #include <bits/attr.h>
 #include <stddef.h>
 
+#define EXIT_SUCCESS        0
+#define EXIT_FAILURE        1
+
+double strtod(const char *nptr, char **endptr);
+
 __Malloc void *malloc(size_t size);
 void *realloc(void *p, size_t newsz);
 void free(void *ptr);

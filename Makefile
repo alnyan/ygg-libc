@@ -3,17 +3,15 @@ HEADERS=$(shell find include -type f -name "*.h")
 INSTALL_HEADERS=$(filter-out include/_libc/%,$(HEADERS))
 OBJ_CRT=$(O)/obj/crt0.o
 SRC_LIBC=$(shell find src -type f -name "*.c")
-OBJ_LIBC=$(SRC_LIBC:src/%.c=$(O)/libc/%.o)
+AS_SRC_LIBC=$(shell find src -type f -name "*.S")
+OBJ_LIBC=$(SRC_LIBC:src/%.c=$(O)/libc/%.o) $(AS_SRC_LIBC:src/%.S=$(O)/libc/%.o)
 SRC_DIR_LIBC=$(shell find src/* -type d)
 DIR_LIBC=$(SRC_DIR_LIBC:src/%=$(O)/libc/%)
 STATIC_LIBS=$(O)/lib/libc.a
 SHARED_LIBS=
 
 # Build
-CFLAGS=-mno-sse \
-	   -mno-sse2 \
-	   -mno-mmx \
-	   -I include \
+CFLAGS=-I include \
 	   -ffreestanding \
 	   -Wall \
 	   -Wextra \
@@ -69,4 +67,7 @@ $(O)/lib/libc.a: $(OBJ_LIBC)
 	)
 
 $(O)/libc/%.o: src/%.c $(HEADERS)
+	$(CC) $(CFLAGS) -c -o $@ $<
+
+$(O)/libc/%.o: src/%.S $(HEADERS)
 	$(CC) $(CFLAGS) -c -o $@ $<

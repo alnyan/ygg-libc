@@ -5,7 +5,10 @@ int fclose(FILE *fp) {
     __libc_file_flush_write(fp);
     __libc_file_flush_read(fp);
 
-    int r = fp->close(fp->ctx);
+    int r = 0;
+    if (fp->close) {
+        r = fp->close(fp->ctx);
+    }
 
     fp->free(fp->ctx, fp);
 
