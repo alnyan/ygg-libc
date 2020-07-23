@@ -5,7 +5,7 @@
 
 int execl(const char *pathname, const char *arg, ...) {
     va_list args;
-    size_t argc;
+    size_t argc = 1;
     int res;
 
     if (!arg) {
@@ -15,7 +15,7 @@ int execl(const char *pathname, const char *arg, ...) {
 
     // 1. collect arg count
     va_start(args, arg);
-    while (va_arg(args, const char *)) {
+    while (va_arg(args, const char *) != NULL) {
         ++argc;
     }
     va_end(args);
@@ -28,9 +28,10 @@ int execl(const char *pathname, const char *arg, ...) {
     }
 
     // 3. copy args
+    argv[0] = (char *) arg;
     va_start(args, arg);
     for (size_t i = 0; i < argc; ++i) {
-        argv[i] = va_arg(args, char *);
+        argv[i + 1] = va_arg(args, char *);
     }
     va_end(args);
     argv[argc] = NULL;

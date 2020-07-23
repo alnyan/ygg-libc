@@ -4,7 +4,7 @@
 #include <string.h>
 #include <stdio.h>
 
-static int system_execute(char *const *argv) {
+int system(const char *command) {
     int pid = fork();
 
     if (pid < 0) {
@@ -12,41 +12,10 @@ static int system_execute(char *const *argv) {
     }
 
     if (pid == 0) {
-        _exit(execve(argv[0], argv, environ));
+        _exit(execl("/bin/sh", "sh", "-c", command, NULL));
     } else {
         int status;
         waitpid(pid, &status, 0);
         return status;
     }
-}
-
-int system(const char *command) {
-    char *s = strdup(command);
-    size_t argc = 2;    // "sh" "-c"
-    size_t argc_cap = 32;
-    char *argv[32];
-    argv[0] = "/bin/sh";
-    argv[1] = "-c";
-    char *token;
-    char *saveptr = NULL;
-    while (1) {
-        token = strtok_r(s, " ", &saveptr);
-        if (!token) {
-            break;
-        }
-        if (argc == argc_cap) {
-            // TODO: extend the buffer
-            free(s);
-            return -1;
-        }
-        argv[argc++] = token;
-        s = NULL;
-    }
-    argv[argc] = NULL;
-
-    int r = system_execute(argv);
-
-    free(s);
-
-    return r;
 }

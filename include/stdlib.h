@@ -7,6 +7,7 @@
 
 double strtod(const char *nptr, char **endptr);
 
+__Malloc void *calloc(size_t size, size_t nmemb);
 __Malloc void *malloc(size_t size);
 void *realloc(void *p, size_t newsz);
 void free(void *ptr);

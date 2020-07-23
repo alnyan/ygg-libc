@@ -6,7 +6,7 @@
 int execle(const char *pathname, const char *arg, ...) {
     va_list args;
     char *const *envp;
-    size_t argc;
+    size_t argc = 1;
     int res;
 
     if (!arg) {
@@ -32,9 +32,10 @@ int execle(const char *pathname, const char *arg, ...) {
     }
 
     // 3. copy args
+    argv[0] = (char *) arg;
     va_start(args, arg);
     for (size_t i = 0; i < argc; ++i) {
-        argv[i] = va_arg(args, char *);
+        argv[i + 1] = va_arg(args, char *);
     }
     envp = va_arg(args, char *const *);
     va_end(args);
