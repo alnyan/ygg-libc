@@ -6,5 +6,5 @@ time_t time(time_t *t) {
     if (gettimeofday(&now, NULL) != 0) {
         return -1;
     }
-    return t ? *t = now.tv_sec : now.tv_sec;
+    return t ? *t = (time_t) now.tv_sec : (time_t) now.tv_sec;
 }

@@ -23,4 +23,6 @@ time_t time(time_t *t);
 double difftime(time_t t1, time_t t0);
 
 struct tm *gmtime_r(const time_t *restrict timep, struct tm *restrict res);
+struct tm *localtime_r(const time_t *restrict timep, struct tm *restrict res);
+time_t mktime(struct tm *tm);
 size_t strftime(char *restrict buf, size_t lim, const char *restrict fmt, const struct tm *restrict tm);

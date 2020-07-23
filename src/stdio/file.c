@@ -20,6 +20,7 @@ FILE *__libc_file_create(void) {
 
     res->free = file_default_free;
     res->buf = ((void *) res) + sizeof(FILE);
+    res->buf_mode = _IOLBF;
     res->ungetc = -1;
 
     return res;

@@ -34,6 +34,12 @@ int    renameat(int olddfd, const char *oldpath, int newdfd, const char *newpath
 char  *ctermid(char *s);
 int    setvbuf(FILE *fp, char *buf, int mode, size_t size);
 void   setbuf(FILE *fp, char *buf);
+int    ungetc(int ch, FILE *fp);
+
+FILE  *tmpfile(void);
+
+FILE  *popen(const char *command, const char *type);
+int    pclose(FILE *fp);
 
 void   flockfile(FILE *fp);
 void   funlockfile(FILE *fp);

@@ -23,6 +23,7 @@ ssize_t getdelim(char **lineptr, size_t *n, int delim, FILE *fp) {
     }
 
     p = *lineptr;
+    rem = *n;
 
     while (1) {
         if (!rem) {

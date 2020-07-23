@@ -2,6 +2,10 @@
 #include <stdio.h>
 
 int fflush(FILE *fp) {
+    if (!fp) {
+        // TODO: flush all open files
+        return 0;
+    }
     if (fp->buf_mode != _IONBF) {
         if (__libc_file_flush_read(fp) != 0) {
             return -1;

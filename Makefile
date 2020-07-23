@@ -12,6 +12,8 @@ SHARED_LIBS=
 
 # Build
 CFLAGS=-I include \
+	   -ggdb \
+	   -Og \
 	   -ffreestanding \
 	   -Wall \
 	   -Wextra \
