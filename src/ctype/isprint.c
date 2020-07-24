@@ -1,5 +1,5 @@
 #include <ctype.h>
 
 int isprint(int ch) {
-    return ch >= ' ' && ch != 127;
+    return ch >= ' ' && ch != 127 && ch < 255;
 }
