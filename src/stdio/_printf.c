@@ -1,4 +1,5 @@
 #include <_libc/stdio.h>
+#include <sys/debug.h>
 #include <string.h>
 #include <ctype.h>
 
@@ -119,6 +120,17 @@ int __libc_vprintf(const char *format,
             }
 
             // TODO: precision
+            if (*format == '.') {
+                ++format;
+                if (*format == '*') {
+                    (void) va_arg(ap, int);
+                    ++format;
+                } else {
+                    while ((ch = *format) && isdigit(ch)) {
+                        ++format;
+                    }
+                }
+            }
 
             // Collect length modifier
             while ((ch = *format)) {
@@ -315,8 +327,19 @@ int __libc_vprintf(const char *format,
                 count += l;
             } else {
                 // Unknown format or '%'
-                if (out(ctx, &ch, 1) != 0) {
-                    goto end;
+                if (ch != '%') {
+                    if (ch == 'f' || ch == 'g') {
+                        ygg_debug_trace("Dropping double: not supported\n");
+                        (void) va_arg(ap, double);
+                    } else {
+                        if (out(ctx, &ch, 1) != 0) {
+                            goto end;
+                        }
+                    }
+                } else {
+                    if (out(ctx, &ch, 1) != 0) {
+                        goto end;
+                    }
                 }
                 ++count;
                 continue;
