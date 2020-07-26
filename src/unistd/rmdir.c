@@ -1,9 +1,10 @@
 #include <_libc/syscalls.h>
 #include <ygg/syscall.h>
+#include <ygg/fcntl.h>
 #include <unistd.h>
 #include <errno.h>
 
 int rmdir(const char *dirname) {
-    return SET_ERRNO(int, __syscall1(SYSCALL_NR_RMDIR, (long) dirname));
+    return unlinkat(AT_FDCWD, dirname, AT_REMOVEDIR);
 }
 

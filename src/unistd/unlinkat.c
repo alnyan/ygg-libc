@@ -1,11 +1,8 @@
+#include <_libc/syscalls.h>
 #include <ygg/syscall.h>
-#include <assert.h>
 #include <unistd.h>
 #include <errno.h>
 
 int unlinkat(int dfd, const char *pathname, int flags) {
-    (void) dfd;
-    (void) pathname;
-    (void) flags;
-    assert(0 && "system call not yet implemented");
+    return SET_ERRNO(int, __syscall3(SYSCALL_NR_UNLINKAT, dfd, (long) pathname, flags));
 }
