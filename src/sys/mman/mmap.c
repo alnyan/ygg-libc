@@ -18,7 +18,3 @@ void *mmap(void *hint, size_t length, int prot, int flags, int fd, off_t offset)
         return (void *) res;
     }
 }
-
-int munmap(void *ptr, size_t len) {
-    return SET_ERRNO(int, __syscall2(SYSCALL_NR_MUNMAP, (long) ptr, len));
-}
