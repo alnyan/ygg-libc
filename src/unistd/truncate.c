@@ -1,10 +1,8 @@
+#include <_libc/syscalls.h>
 #include <ygg/syscall.h>
-#include <assert.h>
 #include <unistd.h>
 #include <errno.h>
 
 int truncate(const char *pathname, off_t size) {
-    (void) pathname;
-    (void) size;
-    assert(0 && "system call not yet implemented");
+    return SET_ERRNO(int, __syscall2(SYSCALL_NR_TRUNCATE, (long) pathname, size));
 }

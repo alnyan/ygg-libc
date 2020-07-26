@@ -1,12 +1,8 @@
+#include <_libc/syscalls.h>
 #include <ygg/syscall.h>
-#include <assert.h>
 #include <unistd.h>
 #include <errno.h>
 
 int ftruncate(int fd, off_t size) {
-    (void) fd;
-    (void) size;
-    assert(0 && "system call not yet implemented");
+    return SET_ERRNO(int, __syscall2(SYSCALL_NR_FTRUNCATE, fd, size));
 }
-
-
