@@ -1,6 +1,7 @@
 #include <_libc/syscalls.h>
 #include <_libc/dirent.h>
 #include <ygg/syscall.h>
+#include <sys/types.h>
 #include <dirent.h>
 #include <errno.h>
 
