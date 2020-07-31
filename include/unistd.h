@@ -2,7 +2,8 @@
 #include <sys/types.h>     // size_t, ssize_t
 
 extern char **environ;
-
+extern char *optarg;
+extern int opterr, optind, optopt;
 
 //// Defines
 // POSIX conformance
