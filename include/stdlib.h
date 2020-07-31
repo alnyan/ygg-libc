@@ -5,6 +5,13 @@
 #define EXIT_SUCCESS        0
 #define EXIT_FAILURE        1
 
+void qsort(void *base, size_t nmemb, size_t size, int (*cmp) (const void *, const void *));
+void qsort_r(void *base,
+             size_t nmemb,
+             size_t size,
+             int (*cmp) (const void *, const void *, void *),
+             void *ctx);
+
 double strtod(const char *nptr, char **endptr);
 
 __Malloc void *calloc(size_t size, size_t nmemb);
