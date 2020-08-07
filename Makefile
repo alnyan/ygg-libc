@@ -63,10 +63,7 @@ $(O)/obj/crt%.o: crt/crt%.c $(HEADERS)
 ### lib
 
 $(O)/lib/libc.a: $(OBJ_LIBC)
-	@$(CROSS_COMPILE)ar rcs $@
-	@$(foreach obj,$(OBJ_LIBC), \
-		$(CROSS_COMPILE)ar rs $@ $(obj); \
-	)
+	@$(CROSS_COMPILE)ar rcs $@ $(OBJ_LIBC)
 
 $(O)/libc/%.o: src/%.c $(HEADERS)
 	$(CC) $(CFLAGS) -c -o $@ $<
