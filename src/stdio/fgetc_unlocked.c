@@ -6,7 +6,7 @@ int fgetc_unlocked(FILE *fp) {
     if (fp->buf_mode == _IONBF) {
         unsigned char c;
         if (fread_unlocked(&c, sizeof(c), 1, fp) == 1) {
-            return c;
+            return ((int) c) & 0xFF;
         }
         return EOF;
     }
@@ -46,5 +46,6 @@ int fgetc_unlocked(FILE *fp) {
         fp->rdbuf = bread;
     }
 
-    return ((char *) fp->buf)[fp->rdbufpos++];
+    char ch = ((char *) fp->buf)[fp->rdbufpos++];
+    return ((int) ch) & 0xFF;
 }
