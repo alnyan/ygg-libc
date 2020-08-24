@@ -4,3 +4,5 @@
 
 int open(const char *pathname, int flags, ...);
 int openat(int dfd, const char *pathname, int flags, mode_t mode);
+
+int fcntl(int fd, int cmd, ...);

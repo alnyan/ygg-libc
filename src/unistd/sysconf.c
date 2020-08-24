@@ -1,7 +1,13 @@
 #include <unistd.h>
-#include <assert.h>
+#include <stdlib.h>
+#include <stdio.h>
 
 long sysconf(int name) {
-    (void) name;
-    assert(0 && "Not implemented");
+    switch (name) {
+    case _SC_OPEN_MAX:
+        return 16;
+    default:
+        fprintf(stderr, "Unknown sysconf(): %d\n", name);
+        abort();
+    }
 }
