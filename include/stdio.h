@@ -60,6 +60,7 @@ size_t      fwrite(const void *data, size_t size, size_t nmemb, FILE *fp);
 size_t      fread(void *data, size_t size, size_t nmemb, FILE *fp);
 char       *fgets(char *buf, int size, FILE *fp);
 int         fputs(const char *s, FILE *fp);
+int         puts(const char *s);
 int         fputc(int ch, FILE *fp);
 void        perror(const char *msg);
 void        rewind(FILE *fp);
