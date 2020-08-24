@@ -22,7 +22,13 @@ clock_t clock(void);
 time_t time(time_t *t);
 double difftime(time_t t1, time_t t0);
 
+char *ctime(const time_t *timep);
+char *ctime_r(const time_t *timep, char *buf);
+
 struct tm *gmtime_r(const time_t *restrict timep, struct tm *restrict res);
+struct tm *gmtime(const time_t *timep);
+
+struct tm *localtime(const time_t *timep);
 struct tm *localtime_r(const time_t *restrict timep, struct tm *restrict res);
 time_t mktime(struct tm *tm);
 size_t strftime(char *restrict buf, size_t lim, const char *restrict fmt, const struct tm *restrict tm);
