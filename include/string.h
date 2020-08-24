@@ -34,3 +34,6 @@ size_t   strspn(const char *a, const char *b);
 char    *strstr(const char *a, const char *b);
 char    *strtok(char *restrict str, const char *restrict delim);
 char    *strtok_r(char *restrict str, const char *restrict delim, char **restrict saveptr);
+
+int      strcasecmp(const char *a, const char *b);
+int      strncasecmp(const char *a, const char *b, size_t n);

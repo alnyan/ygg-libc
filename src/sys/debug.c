@@ -14,6 +14,9 @@ void ygg_debug_trace(const char *fmt, ...) {
     char buf[512];
     va_list args;
     va_start(args, fmt);
-    vsnprintf(buf, sizeof(buf), fmt, args);
+    int len = vsnprintf(buf, sizeof(buf), fmt, args);
     va_end(args);
+    if (len >= 0) {
+        ygg_msg_trace(buf, len);
+    }
 }

@@ -1,47 +1,117 @@
+#include <sys/debug.h>
 #include <_libc/stdio.h>
 #include <ctype.h>
 #include <stdio.h>
+
+enum printf_len {
+    PL_0,
+    PL_h,
+    PL_hh,
+    PL_l,
+    PL_ll,
+    PL_j,
+    PL_z,
+    PL_t,
+    PL_L
+};
 
 int __libc_vscanf(const char *format,
                   void *ctx,
                   int (*in)(void *ctx),
                   va_list ap) {
     size_t n_convert = 0;
+    char *out_str;
     union {
-        uint64_t value_unsigned;
+        unsigned int value_u;
+        unsigned long value_ul;
+        unsigned long long value_ull;
+
+        uintptr_t value_uintptr;
     } pv;
+    enum printf_len lenmod;
     char ch;
-    int ic;
+    int ic = EOF;
+#define peek()  \
+    (ic == EOF ? (ic = in(ctx)) : ic)
+#define pop()   \
+    (ic == EOF ? ic : (ic = in(ctx)))
 
-    while ((ch = *format)) {
-        if (isspace(ch)) {
+    (void) out_str;
+    (void) lenmod;
+    (void) pv;
+    (void) ap;
+
+    while ((ch = *format++)) {
+        if (ch == ' ') {
             // Skip whitespace
-        } else if (ch == '%') {
-            // Conversion spec
-            ch = *++format;
-
-            switch (ch) {
-            case 'u':
-                pv.value_unsigned = 0;
-                while ((ic = in(ctx)) != EOF && isdigit(ic)) {
-                    pv.value_unsigned *= 10;
-                    pv.value_unsigned += ic - '0';
+            while (isspace(peek())) {
+                if (pop() == EOF) {
+                    break;
                 }
-                *((unsigned int *) va_arg(ap, unsigned int *)) = pv.value_unsigned;
-                ++n_convert;
-                ++format;
+            }
+        } else if (ch == '%') {
+            // Collect lenmod
+            lenmod = PL_0;
+
+            while ((ch = *format)) {
+                switch (ch) {
+                case 'l':
+                    lenmod = (lenmod == PL_l ? PL_ll : PL_l);
+                    ++format;
+                    continue;
+                case 'h':
+                    lenmod = (lenmod == PL_h ? PL_hh : PL_h);
+                    ++format;
+                    continue;
+                default:
+                    break;
+                }
                 break;
-            default:
-                goto err;
+            }
+
+            // Conversion spec
+            ch = *format++;
+            if (ch == 'u') {
+                // At least one should be numeric
+                uintmax_t rv = 0;
+
+                if (peek() == EOF || !isdigit(peek())) {
+                    goto err;
+                }
+
+                while (isdigit(peek())) {
+                    rv *= 10;
+                    rv += (peek() - '0');
+                    pop();
+                }
+
+                switch (lenmod) {
+                case PL_0:
+                    *va_arg(ap, int *) = (int) rv;
+                    break;
+                case PL_l:
+                    *va_arg(ap, long *) = (long) rv;
+                    break;
+                case PL_ll:
+                    *va_arg(ap, long long *) = (long long) rv;
+                    break;
+                default:
+                    ygg_debug_trace("%s: unknown lenmod: %u\n", __func__, lenmod);
+                    goto err;
+                }
+                ++n_convert;
+            } else {
+                ygg_debug_trace("%s: unknown conversion spec: %%%u\n", __func__, ch);
+                while (1);
             }
         } else {
-            ic = in(ctx);
-
-            if (ic == EOF) {
+            // Literal character match
+            if (peek() != ch) {
                 goto err;
             }
+            ygg_debug_trace("Match: literal %c\n", ch);
+            pop();
         }
-        ++format;
     }
 
 err:

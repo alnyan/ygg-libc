@@ -16,5 +16,8 @@ FILE *fopen(const char *pathname, const char *mode) {
         return NULL;
     }
 
+    // Buffering is broken again
+    setvbuf(fp, NULL, _IONBF, 0);
+
     return fp;
 }
