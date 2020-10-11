@@ -71,23 +71,44 @@ int __libc_vscanf(const char *format,
 
             // Conversion spec
             ch = *format++;
-            if (ch == 'u') {
+            if (ch == 'u' || ch == 'x') {
                 // At least one should be numeric
                 uintmax_t rv = 0;
+                int dig;
 
                 if (peek() == EOF || !isdigit(peek())) {
                     goto err;
                 }
 
-                while (isdigit(peek())) {
-                    rv *= 10;
-                    rv += (peek() - '0');
-                    pop();
+                switch (ch) {
+                case 'u':
+                    while (isdigit(peek())) {
+                        rv *= 10;
+                        rv += (peek() - '0');
+                        pop();
+                    }
+                    break;
+                case 'x':
+                    while (isxdigit((dig = peek()))) {
+                        rv <<= 4;
+                        if (dig >= 'A' && dig <= 'F') {
+                            rv |= (dig - 'A' + 0xA);
+                        } else if (dig >= 'a' && dig <= 'f') {
+                            rv |= (dig - 'a' + 0xA);
+                        } else {
+                            rv |= dig - '0';
+                        }
+                        pop();
+                    }
+                    break;
                 }
 
                 switch (lenmod) {
                 case PL_0:
                     *va_arg(ap, int *) = (int) rv;
+                    break;
+                case PL_h:
+                    *va_arg(ap, short *) = (short) rv;
                     break;
                 case PL_l:
                     *va_arg(ap, long *) = (long) rv;
@@ -101,7 +122,7 @@ int __libc_vscanf(const char *format,
                 }
                 ++n_convert;
             } else {
-                ygg_debug_trace("%s: unknown conversion spec: %%%u\n", __func__, ch);
+                ygg_debug_trace("%s: unknown conversion spec: %%%c\n", __func__, ch);
                 while (1);
             }
         } else {
