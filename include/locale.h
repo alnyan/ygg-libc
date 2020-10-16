@@ -1,5 +1,9 @@
 #pragma once
 
+#if defined(__cplusplus)
+extern "C" {
+#endif
+
 struct lconv {
     char *currency_symbol;
     char *decimal_point;
@@ -39,3 +43,7 @@ typedef struct __locale *locale_t;
 
 char *setlocale(int cat, const char *loc);
 struct lconv *localeconv(void);
+
+#if defined(__cplusplus)
+}
+#endif

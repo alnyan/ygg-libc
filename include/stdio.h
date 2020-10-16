@@ -3,6 +3,10 @@
 #include <stddef.h>
 #include <stdarg.h>
 
+#if defined(__cplusplus)
+extern "C" {
+#endif
+
 #define EOF             -1
 #define BUFSIZ          8192
 #define _IOLBF          1
@@ -102,3 +106,7 @@ int    sscanf(const char *str, const char *format, ...);
 int    vscanf(const char *format, va_list ap);
 int    vfscanf(FILE *fp, const char *format, va_list ap);
 int    vsscanf(const char *str, const char *format, va_list ap);
+
+#if defined(__cplusplus)
+}
+#endif

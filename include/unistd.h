@@ -1,5 +1,10 @@
 #pragma once
 #include <sys/types.h>     // size_t, ssize_t
+#include <bits/attr.h>
+
+#if defined(__cplusplus)
+extern "C" {
+#endif
 
 extern char **environ;
 extern char *optarg;
@@ -279,8 +284,8 @@ int pipe(int fds[2]);                                                           
 ssize_t pread(int fd, void *buf, size_t count, off_t offset);                                   //-
 ssize_t pwrite(int fd, const void *buf, size_t count, off_t offset);                            //-
 ssize_t read(int fd, void *buf, size_t count);                                                  //+
-ssize_t readlink(const char *restrict pathname, char *restrict buf, size_t lim);                //-
-ssize_t readlinkat(int dfd, const char *restrict pathname, char *restrict buf, size_t lim);     //-
+ssize_t readlink(const char *__Restrict pathname, char *__Restrict buf, size_t lim);                //-
+ssize_t readlinkat(int dfd, const char *__Restrict pathname, char *__Restrict buf, size_t lim);     //-
 int rmdir(const char *dirname);                                                                 //+
 int symlink(const char *target, const char *linkpath);                                          //-
 int symlinkat(const char *target, int linkdfd, const char *linkpath);                           //-
@@ -315,7 +320,7 @@ long sysconf(int name);                                                         
 int getopt(int argc, char *const argv[], const char *optstr);                                   //
 
 // Process control
-_Noreturn void _exit(int status);                                                               //+
+__Noreturn void _exit(int status);                                                               //+
 pid_t fork(void);                                                                               //+
 pid_t getpgid(pid_t pid);                                                                       //+
 pid_t getpgrp(void);                                                                            //+
@@ -337,3 +342,7 @@ int ttyname_r(int fd, char *buf, size_t size);                                  
 char *crypt(const char *key, const char *salt);                                                 //
 void encrypt(char block[64], int edflag);                                                       //
 void swab(const void *from, void *to, ssize_t n);                                               //
+
+#if defined(__cplusplus)
+}
+#endif

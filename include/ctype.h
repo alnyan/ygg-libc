@@ -1,5 +1,9 @@
 #pragma once
 
+#if defined(__cplusplus)
+extern "C" {
+#endif
+
 int isalnum(int ch);
 int isalpha(int ch);
 int isascii(int ch);
@@ -16,3 +20,7 @@ int isxdigit(int ch);
 int toascii(int ch);
 int tolower(int ch);
 int toupper(int ch);
+
+#if defined(__cplusplus)
+}
+#endif

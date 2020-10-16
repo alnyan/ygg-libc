@@ -20,3 +20,7 @@ void ygg_debug_trace(const char *fmt, ...) {
         ygg_msg_trace(buf, len);
     }
 }
+
+int ygg_debug_instr(uint32_t cmd, void *arg0, void *arg1, void *arg2) {
+    return SET_ERRNO(int, __syscall4(SYSCALL_NRX_INSTR, cmd, (long) arg0, (long) arg1, (long) arg2));
+}

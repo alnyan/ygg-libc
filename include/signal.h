@@ -1,6 +1,11 @@
 #pragma once
 #include <ygg/signum.h>
+#include <ygg/signal.h>
 #include <ygg/types.h>
+
+#if defined(__cplusplus)
+extern "C" {
+#endif
 
 #define SIG_DFL         _sig_dfl
 #define SIG_ERR         ((sighandler_t) -1)
@@ -17,3 +22,8 @@ sighandler_t signal(int signum, sighandler_t handler);
 int sigaltstack(const stack_t *ss, stack_t *old_ss);
 
 int kill(pid_t pid, int sig);
+int raise(int sig);
+
+#if defined(__cplusplus)
+}
+#endif
