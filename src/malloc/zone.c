@@ -7,7 +7,7 @@ LIST_HEAD(mid_zone_list);
 LIST_HEAD(large_zone_list);
 
 struct zone *zone_create(size_t size) {
-    void *pages = mmap(NULL, size, 0, MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
+    void *pages = mmap(NULL, size, PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
     if (pages == MAP_FAILED) {
         return NULL;
     }

@@ -75,7 +75,7 @@ void *malloc(size_t size) {
         return alloc_from(&large_zone_list, LARGE_ZONE_SIZE, size);
     } else {
         size_t pages_needed = (size + 0xFFF) & ~0xFFF;
-        void *pages = mmap(NULL, pages_needed + 0x1000, 0, MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
+        void *pages = mmap(NULL, pages_needed + 0x1000, PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
 
         if (pages == MAP_FAILED) {
             return NULL;
