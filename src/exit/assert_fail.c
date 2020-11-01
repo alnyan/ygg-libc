@@ -1,7 +1,7 @@
-// TODO: move to a proper place once I do abort()
 #include <assert.h>
 #include <string.h>
 #include <unistd.h>
+#include <stdlib.h>
 
 _Noreturn void _assert_fail(const char *func, const char *msg) {
     static const char msg0[] = "In function `";
@@ -12,5 +12,6 @@ _Noreturn void _assert_fail(const char *func, const char *msg) {
     write(STDERR_FILENO, msg, strlen(msg));
     write(STDERR_FILENO, msg1 + 2, 1);
 
-    _exit(-1);
+    abort();
+    while (1);
 }
